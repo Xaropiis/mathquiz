@@ -1,0 +1,98 @@
+const quizData = [
+  {
+    question: "Qual game recebeu a premiação de 'Jogo do Ano' em 2016?",
+      a: "Overwatch",
+      b: "GTA 5",
+      c: "God of War",
+      d: "Uncharted 4",
+      correct: "a",
+  },
+  {
+    question: "Qual o console mais vendido da história?",
+      a: "Xbox 360",
+      b: "Nintendo DS",
+      c: "Playstation 2",
+      d: "GameBoy Color",
+      correct: "c",
+  },
+  {
+    question: "Qual o jogo mais vendido do mundo?",
+    a: "Fifa",
+    b: "Call of Duty",
+    c: "Super Mario Bros",
+    d: "Minecraft",
+    correct: "d",
+  },
+  {
+    question: "Qual foi o primeiro videogame portátil?",
+      a: "Nintendo Switch",
+      b: "GameBoy",
+      c: "Microvision",
+      d: "Tamagotchi",
+      correct: "c",
+  },
+];
+
+const quiz = document.getElementById('quiz')
+const answerEls = document.querySelectorAll('.answer')
+const questionEl = document.getElementById('question')
+const a_text = document.getElementById('a_text')
+const b_text = document.getElementById('b_text')
+const c_text = document.getElementById('c_text')
+const d_text = document.getElementById('d_text')
+const submitBtn = document.getElementById('submit')
+
+let currentQuiz = 0
+let score = 0
+
+loadQuiz()
+
+function loadQuiz() {
+  deselectAnswers()
+
+  const currentQuizData = quizData[currentQuiz]
+
+  questionEl.innerText = currentQuizData.question
+  a_text.innerText = currentQuizData.a
+  b_text.innerText = currentQuizData.b
+  c_text.innerText = currentQuizData.c
+  d_text.innerText = currentQuizData.d
+}
+
+function deselectAnswers() {
+  answerEls.forEach(answerEl => answerEl.checked = false)
+}
+
+function getSelected() {
+  let answer
+
+  answerEls.forEach(answerEl => {
+    if (answerEl.checked) {
+      answer = answerEl.id
+    }
+  })
+
+  return answer
+}
+
+submitBtn.addEventListener('click', () => {
+  const answer = getSelected()
+
+  if (answer) {
+    if (answer === quizData[currentQuiz].correct) {
+      score++
+    }
+
+    currentQuiz++
+
+    if (currentQuiz < quizData.length) {
+      loadQuiz()
+    } else {
+      quiz.innerHTML = `
+                <h2>You answered ${score}/${quizData.length} questions correctly</h2>
+
+                <button onclick="location.reload()">Reload</button>
+            `
+    }
+  }
+})
